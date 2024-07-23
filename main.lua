@@ -61,7 +61,7 @@ function ModelLoader:LoadObjects(objects, parent)
                     elseif desc:IsA("Part") and shapeMappings[desc.Shape] then
                         partType = shapeMappings[desc.Shape]
                     end
-                    local part = F3X:CreatePart(partType, desc.CFrame)
+                    local part = F3X:CreatePart(partType, desc.CFrame, parent)
                     table.insert(partResizes, {["Part"] = part, ["CFrame"] = desc.CFrame, ["Size"] = desc.Size})
                     table.insert(partColors, {["Part"] = part, ["Color"] = desc.Color})
                     table.insert(partSurfaces, {["Part"] = part, {
