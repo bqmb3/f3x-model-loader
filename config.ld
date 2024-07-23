@@ -1,0 +1,10 @@
+project = "f3x-model-loader"
+title = "f3x-model-loader"
+description = "F3X Model Loader"
+format = "discount"
+backtick_references = false
+file = {"main.lua"}
+dir = "public"
+style = "!new"
+examples = "examples"
+-- vim: ft=lua

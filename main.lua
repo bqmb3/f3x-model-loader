@@ -4,7 +4,7 @@
 -- @license MIT
 -- @copyright bqmb3 2024
 
-local Loader = {}
+local ModelLoader = {}
 local F3X = loadstring(game:HttpGet("https://raw.githubusercontent.com/bqmb3/f3x-wrapper/main/loader.lua",true))()
 
 local classNameMappings = {
@@ -23,12 +23,11 @@ local shapeMappings = {
     [Enum.PartType.CornerWedge] = "Corner"
 }
 
---- Loads client-side objects.
+--- Loads client-side objects
 -- @tparam {Instance,...} objects Table of objects to load
--- @tparam[opt=nil] function callback Callback function for every loaded parts (BasePart)
 -- @tparam[opt=workspace] Instance parent Parent of loaded parts
 -- @treturn {Instance,...} Loaded parts
-function Loader:LoadObjects(objects, parent)
+function ModelLoader:LoadObjects(objects, parent)
     local totalParts = {}
     local goal = 0
     parent = parent or workspace
@@ -241,4 +240,4 @@ function Loader:LoadObjects(objects, parent)
     return totalParts
 end
 
-return Loader
+return ModelLoader

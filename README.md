@@ -5,12 +5,21 @@
 
 **f3x-model-loader** is not completed yet. Check back soon!
 
-Currently supports:
-- Parts
-- Lights
-- MeshPart and SpecialMesh
-- Decal and Texture
+## Getting started
+
+### For GUI users
+```lua
+loadstring(game:HttpGet("https://raw.githubusercontent.com/bqmb3/f3x-model-loader/main/gui.lua",true))()
+```
+
+### For developers
+To use `f3x-model-loader` in your script, 
+```lua
+local ModelLoader = loadstring(game:HttpGet("https://raw.githubusercontent.com/bqmb3/f3x-model-loader/main/main.lua",true))()
+```
+
+For more detailed documentation, please visit [this link](https://bqmb3.github.io/f3x-model-loader).
 
 ## License
 
-**f3x-wrapper** is licensed under the MIT License.
+**f3x-model-loader** is licensed under the MIT License.
