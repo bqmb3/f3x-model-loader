@@ -203,7 +203,7 @@ function ModelLoader:LoadObjects(objects, parent)
     local tasks = {
         function() F3X:SetNames(partsToRename, partNames) end,
         function() F3X:ResizeParts(partResizes) end,
-        function() F3X:SetColor(partColors) end,
+        function() F3X:SetColors(partColors) end,
         function() F3X:SetPartsSurfaces(partSurfaces) end,
         
         function()
