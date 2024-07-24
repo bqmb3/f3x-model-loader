@@ -195,7 +195,7 @@ function ModelLoader:LoadObjects(objects, parent)
                     })
 
                     table.insert(totalParts, part)
-                end)
+                end)()
             end
         end
     end
