@@ -153,7 +153,7 @@ function ModelLoader:LoadObjects(objects, parent)
                             ["Part"] = part,
                             ["MeshType"] = Enum.MeshType.FileMesh,
                             ["MeshId"] = desc.MeshId,
-                            ["TextureId"] = desc.TextureId
+                            ["TextureId"] = desc.TextureID
                         })
                     end
                     local BlockMesh = desc:FindFirstChildOfClass("BlockMesh")
