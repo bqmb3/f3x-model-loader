@@ -42,6 +42,7 @@ function ModelLoader:LoadObjects(objects, parent)
     local partDecorations = {}
     local partDecorationProperties = {}
     local partMeshes = {}
+    local partMeshProperties = {}
     local partTextures = {}
     local partTextureProperties = {}
     local partAnchor = {}
@@ -147,11 +148,36 @@ function ModelLoader:LoadObjects(objects, parent)
                     end
 
                     if desc:IsA("MeshPart") and desc.MeshId ~= "" then
-                        table.insert(partMeshes, {
+                        table.insert(partMeshes, {["Part"] = part})
+                        table.insert(partMeshProperties, {
                             ["Part"] = part,
                             ["MeshType"] = Enum.MeshType.FileMesh,
                             ["MeshId"] = desc.MeshId,
                             ["TextureId"] = desc.TextureId
+                        })
+                    end
+                    local BlockMesh = desc:FindFirstChildOfClass("BlockMesh")
+                    local SpecialMesh = desc:FindFirstChildOfClass("SpecialMesh")
+                    if BlockMesh then
+                        table.insert(partMeshes, {["Part"] = part})
+                        table.insert(partMeshProperties, {
+                            ["Part"] = part,
+                            ["MeshType"] = Enum.MeshType.Brick,
+                            ["Scale"] = BlockMesh.Scale,
+                            ["Offset"] = BlockMesh.Offset,
+                            ["VertexColor"] = BlockMesh.VertexColor
+                        })
+                    end
+                    if SpecialMesh then
+                        table.insert(partMeshes, {["Part"] = part})
+                        table.insert(partMeshProperties, {
+                            ["Part"] = part,
+                            ["MeshType"] = SpecialMesh.MeshType,
+                            ["MeshId"] = SpecialMesh.MeshId,
+                            ["TextureId"] = SpecialMesh.TextureId,
+                            ["Scale"] = SpecialMesh.Scale,
+                            ["Offset"] = SpecialMesh.Offset,
+                            ["VertexColor"] = SpecialMesh.VertexColor
                         })
                     end
 
@@ -200,6 +226,8 @@ function ModelLoader:LoadObjects(objects, parent)
         end
     end
 
+    repeat task.wait() until #totalParts == goal
+
     local tasks = {
         function() F3X:SetNames(partsToRename, partNames) end,
         function() F3X:ResizeParts(partResizes) end,
@@ -216,7 +244,10 @@ function ModelLoader:LoadObjects(objects, parent)
             F3X:SetDecorations(partDecorationProperties)
         end,
 
-        function() F3X:CreateMeshes(partMeshes) end,
+        function()
+            F3X:CreateMeshes(partMeshes)
+            F3X:SetMeshes(partMeshProperties)
+        end,
 
         function()
             F3X:CreateTextures(partTextures)
