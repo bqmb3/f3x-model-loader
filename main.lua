@@ -23,14 +23,21 @@ local shapeMappings = {
     [Enum.PartType.CornerWedge] = "Corner"
 }
 
+--- Options for loading models.
+-- @table LoadOptions
+-- @tfield[opt=false] boolean AnchorAll Whether all parts should be anchored.
+-- @see LoadObjects
+
 --- Loads client-side objects
 -- @tparam {Instance,...} objects Table of objects to load
 -- @tparam[opt=workspace] Instance parent Parent of loaded parts
+-- @tparam[opt={}] LoadOptions options Load Options
 -- @treturn {Instance,...} Loaded parts
-function ModelLoader:LoadObjects(objects, parent)
+function ModelLoader:LoadObjects(objects, parent, options)
     local totalParts = {}
     local goal = 0
     parent = parent or workspace
+    options = options or {}
 
     local partsToRename = {}
     local partNames = {}
@@ -255,7 +262,11 @@ function ModelLoader:LoadObjects(objects, parent)
             F3X:SetTextures(partTextureProperties)
         end,
 
-        function() F3X:SetAnchors(partAnchor) end,
+        function()
+            if not options.AnchorAll then
+                F3X:SetAnchors(partAnchor)
+            end
+        end,
         function() F3X:SetCollisions(partCollisions) end,
         function() F3X:SetMaterials(partMaterials) end,
     }
