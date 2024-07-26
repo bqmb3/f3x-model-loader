@@ -1,3 +1,4 @@
+local DataStoreService = game:GetService("DataStoreService")
 --- This module loads client-side or external models by rebuilding them using F3X.
 -- @module f3x-model-loader
 -- @author bqmb3
@@ -72,7 +73,8 @@ function ModelLoader:LoadObjects(objects, parent, options)
                     elseif CylinderMesh then
                         partType = "Cylinder"
                         desc.CFrame *= CFrame.new(CylinderMesh.Offset)
-                        desc.Size *= CylinderMesh.Scale
+                        desc.Size = Vector3.new(desc.Size.Y, desc.Size.X, desc.size.Z) * CylinderMesh.Scale
+                        desc.Orientation += Vector3.new(0, 0, 90)
                     end
                     local part = F3X:CreatePart(partType, desc.CFrame, parent)
                     table.insert(partResizes, {["Part"] = part, ["CFrame"] = desc.CFrame, ["Size"] = desc.Size})
