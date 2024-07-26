@@ -64,10 +64,15 @@ function ModelLoader:LoadObjects(objects, parent, options)
                 table.insert(partNames, desc.Name)
                 coroutine.wrap(function()
                     local partType = "Normal"
+                    local CylinderMesh = desc:FindFirstChildOfClass("CylinderMesh")
                     if classNameMappings[desc.ClassName] then
                         partType = classNameMappings[desc.ClassName]
                     elseif desc:IsA("Part") and shapeMappings[desc.Shape] then
                         partType = shapeMappings[desc.Shape]
+                    elseif CylinderMesh then
+                        partType = "Cylinder"
+                        desc.CFrame *= CylinderMesh.Offset
+                        desc.Size *= CylinderMesh.Scale
                     end
                     local part = F3X:CreatePart(partType, desc.CFrame, parent)
                     table.insert(partResizes, {["Part"] = part, ["CFrame"] = desc.CFrame, ["Size"] = desc.Size})
@@ -165,7 +170,6 @@ function ModelLoader:LoadObjects(objects, parent, options)
                         })
                     end
                     local BlockMesh = desc:FindFirstChildOfClass("BlockMesh")
-                    local CylinderMesh = desc:FindFirstChildOfClass("CylinderMesh")
                     local SpecialMesh = desc:FindFirstChildOfClass("SpecialMesh")
                     local FileMesh = desc:FindFirstChildOfClass("FileMesh")
                     if BlockMesh then
@@ -176,16 +180,6 @@ function ModelLoader:LoadObjects(objects, parent, options)
                             ["Scale"] = BlockMesh.Scale,
                             ["Offset"] = BlockMesh.Offset,
                             ["VertexColor"] = BlockMesh.VertexColor
-                        })
-                    end
-                    if CylinderMesh then
-                        table.insert(partMeshes, {["Part"] = part})
-                        table.insert(partMeshProperties, {
-                            ["Part"] = part,
-                            ["MeshType"] = Enum.MeshType.Cylinder,
-                            ["Scale"] = CylinderMesh.Scale,
-                            ["Offset"] = CylinderMesh.Offset,
-                            ["VertexColor"] = CylinderMesh.VertexColor
                         })
                     end
                     if SpecialMesh then
