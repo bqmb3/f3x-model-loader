@@ -71,7 +71,7 @@ function ModelLoader:LoadObjects(objects, parent, options)
                         partType = shapeMappings[desc.Shape]
                     elseif CylinderMesh then
                         partType = "Cylinder"
-                        desc.CFrame *= CylinderMesh.Offset
+                        desc.CFrame *= CFrame.new(CylinderMesh.Offset)
                         desc.Size *= CylinderMesh.Scale
                     end
                     local part = F3X:CreatePart(partType, desc.CFrame, parent)
