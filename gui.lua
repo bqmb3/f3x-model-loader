@@ -58,36 +58,29 @@ function loadObjects(objects)
     })
 end
 
-local loading = false
 local Tab = Window:CreateTab("Load model")
 local Input Input = Tab:CreateInput({
     Name = "Model Id",
     PlaceholderText = "rbxassetid://...",
+    OnEnter = true,
     RemoveTextAfterFocusLost = false,
+    NumbersOnly = true,
     Callback = function(Text)
-        if loading then
-            Input:Set("")
-            return ArrayField:Notify({
-                Title = "Error",
-                Content = "Another model is currently loading. Please wait.",
-                Duration = 5,
-            })
-        end
-        local ModelId = "rbxassetid://" .. Text:gsub('%D+', '')
+        local ModelId = "rbxassetid://" .. Text
         local success, objects = pcall(function()
             return game:GetObjects(ModelId)
         end)
         if not success then
-            Input:Set("")
-            return ArrayField:Notify({
+            ArrayField:Notify({
                 Title = "Error",
                 Content = "You must set a valid asset ID",
                 Duration = 5,
             })
+            return error("Invalid asset ID")
         end
-        loading = true
-        Input:Set(ModelId)
-        loading = false
+        Input:Lock("Loading...")
+        loadObjects(objects)
+        Input:Unlock()
     end,
 })
 
@@ -100,20 +93,13 @@ AnchorAll = Tab:CreateToggle({
 local searchResults = {}
 
 local toolbox = Window:CreateTab("Toolbox")
-local searching = false
-toolbox:CreateInput({
+local searchBar searchBar = toolbox:CreateInput({
     Name = "Model",
     PlaceholderText = "Search",
+    OnEnter = true,
     RemoveTextAfterFocusLost = false,
     Callback = function(query)
-        if searching then
-            return ArrayField:Notify({
-                Title = "Error",
-                Content = 'Currently searching "'..searching..'", please wait.',
-                Duration = 5,
-            })
-        end
-        searching = query
+        searchBar:Lock("Searching...")
         for _, btn in ipairs(searchResults) do
             btn:Destroy()
         end
@@ -128,6 +114,6 @@ toolbox:CreateInput({
                 end,
             })) 
         end
-        searching = false
+        searchBar:Unlock()
     end,
 })
