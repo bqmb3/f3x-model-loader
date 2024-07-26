@@ -165,7 +165,9 @@ function ModelLoader:LoadObjects(objects, parent, options)
                         })
                     end
                     local BlockMesh = desc:FindFirstChildOfClass("BlockMesh")
+                    local CylinderMesh = desc:FindFirstChildOfClass("CylinderMesh")
                     local SpecialMesh = desc:FindFirstChildOfClass("SpecialMesh")
+                    local FileMesh = desc:FindFirstChildOfClass("FileMesh")
                     if BlockMesh then
                         table.insert(partMeshes, {["Part"] = part})
                         table.insert(partMeshProperties, {
@@ -174,6 +176,16 @@ function ModelLoader:LoadObjects(objects, parent, options)
                             ["Scale"] = BlockMesh.Scale,
                             ["Offset"] = BlockMesh.Offset,
                             ["VertexColor"] = BlockMesh.VertexColor
+                        })
+                    end
+                    if CylinderMesh then
+                        table.insert(partMeshes, {["Part"] = part})
+                        table.insert(partMeshProperties, {
+                            ["Part"] = part,
+                            ["MeshType"] = Enum.MeshType.Cylinder,
+                            ["Scale"] = CylinderMesh.Scale,
+                            ["Offset"] = CylinderMesh.Offset,
+                            ["VertexColor"] = CylinderMesh.VertexColor
                         })
                     end
                     if SpecialMesh then
@@ -186,6 +198,18 @@ function ModelLoader:LoadObjects(objects, parent, options)
                             ["Scale"] = SpecialMesh.Scale,
                             ["Offset"] = SpecialMesh.Offset,
                             ["VertexColor"] = SpecialMesh.VertexColor
+                        })
+                    end
+                    if FileMesh then
+                        table.insert(partMeshes, {["Part"] = part})
+                        table.insert(partMeshProperties, {
+                            ["Part"] = part,
+                            ["MeshType"] = Enum.MeshType.FileMesh,
+                            ["MeshId"] = FileMesh.MeshId,
+                            ["TextureId"] = FileMesh.TextureId,
+                            ["Scale"] = FileMesh.Scale,
+                            ["Offset"] = FileMesh.Offset,
+                            ["VertexColor"] = FileMesh.VertexColor
                         })
                     end
 
