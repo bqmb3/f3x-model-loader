@@ -12,8 +12,8 @@ local classNameMappings = {
     ["WedgePart"] = "Wedge",
     ["CornerWedgePart"] = "Corner",
     ["Seat"] = "Seat",
-    ["VehicleSeat"] = "VehicleSeat",
-    ["SpawnLocation"] = "SpawnLocation"
+    ["VehicleSeat"] = "Vehicle Seat",
+    ["SpawnLocation"] = "Spawn"
 }
 
 local shapeMappings = {
