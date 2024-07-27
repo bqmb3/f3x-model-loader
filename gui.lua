@@ -21,8 +21,9 @@ local Window = ArrayField:CreateWindow({
 })
 
 local AnchorAll
+local PreserveGroups
 function loadObjects(objects)
-    local parts = ModelLoader:LoadObjects(objects, workspace, {["AnchorAll"] = AnchorAll.CurrentValue})
+    local parts = ModelLoader:LoadObjects(objects, workspace, {["AnchorAll"] = AnchorAll.CurrentValue, ["PreserveGroups"] = PreserveGroups.CurrentValue})
     ArrayField:Notify({
         Title = "Model Loader",
         Content = "Loaded "..#parts.." parts.",
@@ -86,6 +87,11 @@ local Input Input = Tab:CreateInput({
 
 AnchorAll = Tab:CreateToggle({
     Name = "Anchor all",
+    CurrentValue = false,
+    Callback = function() end
+})
+PreserveGroups = Tab:CreateToggle({
+    Name = "Preserve Groups",
     CurrentValue = false,
     Callback = function() end
 })
