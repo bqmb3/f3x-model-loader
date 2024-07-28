@@ -337,7 +337,9 @@ function ModelLoader:LoadObjects(objects, parent, options)
                 if lastDepth ~= group.Depth or group.Depth == 0 then while #groupInstances ~= groupsCount do task.wait() end end
                 local items = {}
                 for _, v in ipairs(group.IndexedChildren) do
-                    table.insert(items, indexedObjects[v])
+                    if indexedObjects[v] then
+                        table.insert(items, indexedObjects[v])
+                    end
                 end
                 if #items == 0 then continue end
                 groupsCount += 1
