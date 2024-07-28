@@ -69,6 +69,7 @@ function ModelLoader:LoadObjects(objects, parent, options)
     local partCollisions = {}
     local partMaterials = {}
     local groups = {}
+    local welds = {}
     
     local instances = {}
     local indexedObjects = {}
@@ -284,6 +285,16 @@ function ModelLoader:LoadObjects(objects, parent, options)
                 Depth = getDepth(desc),
                 IndexedChildren = indexedChildren
             })
+        elseif (desc:IsA("Weld") or desc:IsA("WeldConstraint")) and desc.Part0 and desc.Part1 and desc.Enabled then
+            local part0Index = table.find(instances, desc.Part0)
+            local part1Index = table.find(instances, desc.Part1)
+            if part0Index and part1Index then
+                if not welds[part0Index] then
+                    welds[part0Index] = {part1Index}
+                else
+                    table.insert(welds[part0Index], part1Index)
+                end
+            end
         end
     end
 
@@ -318,8 +329,23 @@ function ModelLoader:LoadObjects(objects, parent, options)
             F3X:CreateTextures(partTextures)
             F3X:SetTextures(partTextureProperties)
         end,
-
         function()
+            local weldsCount = 0
+            local totalWelds = 0
+            for part0Index, part1Indexes in pairs(welds) do
+                totalWelds += 1
+                local parts = {}
+                for _, v in ipairs(part1Indexes) do
+                    if indexedObjects[v] then
+                        table.insert(parts, indexedObjects[v])
+                    end
+                end
+                coroutine.wrap(function()
+                    F3X:CreateWelds(parts, indexedObjects[part0Index])
+                    weldsCount += 1
+                end)()
+            end
+            repeat task.wait() until weldsCount == totalWelds
             if not options.AnchorAll then
                 F3X:SetAnchors(partAnchor)
             end
@@ -357,6 +383,7 @@ function ModelLoader:LoadObjects(objects, parent, options)
             coroutine.wrap(function() F3X:SetNames(groupsToRename, groupNames) end)
         end,
     }
+
     local tasksDone = 0
     for _, t in ipairs(tasks) do
         coroutine.wrap(function()
