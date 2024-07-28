@@ -285,7 +285,7 @@ function ModelLoader:LoadObjects(objects, parent, options)
                 Depth = getDepth(desc),
                 IndexedChildren = indexedChildren
             })
-        elseif (desc:IsA("Weld") or desc:IsA("WeldConstraint")) and desc.Part0 and desc.Part1 and desc.Enabled then
+        elseif (desc:IsA("Weld") or desc:IsA("WeldConstraint") or desc:IsA("Snap")) and desc.Part0 and desc.Part1 and desc.Enabled then
             local part0Index = table.find(instances, desc.Part0)
             local part1Index = table.find(instances, desc.Part1)
             if part0Index and part1Index then
